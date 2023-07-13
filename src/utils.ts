@@ -129,10 +129,10 @@ export const spreadElement = <Result>(parser: AnyParser<Result>) => {
   });
 };
 
-export const spreadElementReferencingIdentifier = <Result>(
+export const spreadElementReferencingIdentifierOrMemberExpression = <Result>(
   parser: AnyParser<Result>,
 ) => {
-  return spreadElement(identifierReferencingVariableDeclaration(parser));
+  return spreadElement(maybeIdentifierTo(parser));
 };
 
 export const dynamicObjectProperty = <KeyResult>(
@@ -211,12 +211,13 @@ export const getPropertiesOfObjectExpression = (
       | t.SpreadElement
     )[] = [property];
 
-    const spreadElementResult = spreadElementReferencingIdentifier(
-      createParser({
-        babelMatcher: t.isObjectExpression,
-        parseNode: (node) => node,
-      }),
-    ).parse(property, context);
+    const spreadElementResult =
+      spreadElementReferencingIdentifierOrMemberExpression(
+        createParser({
+          babelMatcher: t.isObjectExpression,
+          parseNode: (node) => node,
+        }),
+      ).parse(property, context)
 
     propertiesToParse.push(
       ...(spreadElementResult?.argumentResult?.properties || []),
