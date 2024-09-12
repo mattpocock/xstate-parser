@@ -1,4 +1,4 @@
-import { AnyParser, ParserContext } from ".";
+import { AnyParser, ParserContext } from '.';
 
 /**
  * Used to declare when a type can be either one
@@ -6,7 +6,7 @@ import { AnyParser, ParserContext } from ".";
  * return the same result
  */
 export const unionType = <Result>(
-  parsers: AnyParser<Result>[],
+  parsers: AnyParser<Result>[]
 ): AnyParser<Result> => {
   const matches = (node: any) => {
     return parsers.some((parser) => parser.matches(node));
@@ -21,6 +21,6 @@ export const unionType = <Result>(
 
   return {
     matches,
-    parse,
+    parse
   };
 };

@@ -1,4 +1,4 @@
-import { assign, createMachine } from "xstate";
+import { assign, createMachine } from 'xstate';
 
 export interface SimpleDataFetchMachineContext {
   data?: Data;
@@ -15,15 +15,15 @@ interface Data {
 
 export type SimpleDataFetchMachineEvent =
   | {
-      type: "FETCH";
+      type: 'FETCH';
       variables: Variables;
     }
   | {
-      type: "RECEIVE_DATA";
+      type: 'RECEIVE_DATA';
       data: Data;
     }
   | {
-      type: "CANCEL";
+      type: 'CANCEL';
     };
 
 const simpleDataFetchMachine = createMachine<
@@ -31,67 +31,67 @@ const simpleDataFetchMachine = createMachine<
   SimpleDataFetchMachineEvent
 >(
   {
-    id: "simpleDataFetch",
-    initial: "idle",
+    id: 'simpleDataFetch',
+    initial: 'idle',
     states: {
       idle: {
         on: {
           FETCH: {
-            target: "fetching",
-          },
+            target: 'fetching'
+          }
         },
-        initial: "noError",
+        initial: 'noError',
         states: {
           noError: {
-            entry: "clearErrorMessage",
+            entry: 'clearErrorMessage'
           },
-          errored: {},
-        },
+          errored: {}
+        }
       },
       fetching: {
         on: {
           FETCH: {
-            target: "fetching",
+            target: 'fetching'
           },
           CANCEL: {
-            target: "idle",
+            target: 'idle'
           },
           RECEIVE_DATA: {
-            target: "idle",
-            actions: "assignDataToContext",
-          },
+            target: 'idle',
+            actions: 'assignDataToContext'
+          }
         },
         invoke: {
-          src: "fetchData",
+          src: 'fetchData',
           onError: {
-            target: "idle.errored",
-            actions: "assignErrorToContext",
-          },
-        },
-      },
-    },
+            target: 'idle.errored',
+            actions: 'assignErrorToContext'
+          }
+        }
+      }
+    }
   },
   {
     services: {
-      fetchData: () => () => {},
+      fetchData: () => () => {}
     },
     actions: {
       assignDataToContext: assign((context, event) => {
-        if (event.type !== "RECEIVE_DATA") return {};
+        if (event.type !== 'RECEIVE_DATA') return {};
         return {
-          data: event.data,
+          data: event.data
         };
       }),
       clearErrorMessage: assign((context) => ({
-        errorMessage: undefined,
+        errorMessage: undefined
       })),
       assignErrorToContext: assign((context, event: any) => {
         return {
-          errorMessage: event.data?.message || "An unknown error occurred",
+          errorMessage: event.data?.message || 'An unknown error occurred'
         };
-      }),
-    },
-  },
+      })
+    }
+  }
 );
 
 export default simpleDataFetchMachine;

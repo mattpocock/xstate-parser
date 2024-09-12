@@ -1,17 +1,17 @@
-import * as t from "@babel/types";
-import { DeclarationType } from ".";
-import { INLINE_IMPLEMENTATION_TYPE } from "./constants";
-import { createParser } from "./createParser";
-import { maybeIdentifierTo } from "./identifiers";
-import { BooleanLiteral, StringLiteral } from "./scalars";
-import { MaybeTransitionArray } from "./transitions";
-import { maybeTsAsExpression } from "./tsAsExpression";
-import { unionType } from "./unionType";
+import * as t from '@babel/types';
+import { DeclarationType } from '.';
+import { INLINE_IMPLEMENTATION_TYPE } from './constants';
+import { createParser } from './createParser';
+import { maybeIdentifierTo } from './identifiers';
+import { BooleanLiteral, StringLiteral } from './scalars';
+import { MaybeTransitionArray } from './transitions';
+import { maybeTsAsExpression } from './tsAsExpression';
+import { unionType } from './unionType';
 import {
   isFunctionOrArrowFunctionExpression,
   maybeArrayOf,
-  objectTypeWithKnownKeys,
-} from "./utils";
+  objectTypeWithKnownKeys
+} from './utils';
 
 interface InvokeNode {
   node: t.Node;
@@ -30,11 +30,11 @@ const InvokeSrcFunctionExpression = maybeTsAsExpression(
         return {
           value,
           node,
-          declarationType: "inline",
+          declarationType: 'inline'
         };
-      },
-    }),
-  ),
+      }
+    })
+  )
 );
 
 const InvokeSrcNode = createParser({
@@ -42,8 +42,8 @@ const InvokeSrcNode = createParser({
   parseNode: (node): InvokeNode => ({
     value: INLINE_IMPLEMENTATION_TYPE,
     node,
-    declarationType: "unknown",
-  }),
+    declarationType: 'unknown'
+  })
 });
 
 const InvokeSrcStringLiteral = createParser({
@@ -51,8 +51,8 @@ const InvokeSrcStringLiteral = createParser({
   parseNode: (node): InvokeNode => ({
     value: node.value,
     node,
-    declarationType: "named",
-  }),
+    declarationType: 'named'
+  })
 });
 
 const InvokeSrcIdentifier = createParser({
@@ -60,15 +60,15 @@ const InvokeSrcIdentifier = createParser({
   parseNode: (node): InvokeNode => ({
     value: INLINE_IMPLEMENTATION_TYPE,
     node,
-    declarationType: "identifier",
-  }),
+    declarationType: 'identifier'
+  })
 });
 
 const InvokeSrc = unionType([
   InvokeSrcStringLiteral,
   InvokeSrcFunctionExpression,
   InvokeSrcIdentifier,
-  InvokeSrcNode,
+  InvokeSrcNode
 ]);
 
 const InvokeConfigObject = objectTypeWithKnownKeys({
@@ -77,7 +77,7 @@ const InvokeConfigObject = objectTypeWithKnownKeys({
   onDone: MaybeTransitionArray,
   onError: MaybeTransitionArray,
   autoForward: BooleanLiteral,
-  forward: BooleanLiteral,
+  forward: BooleanLiteral
 });
 
 export const Invoke = maybeArrayOf(InvokeConfigObject);

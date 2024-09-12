@@ -1,24 +1,24 @@
-import { createMachine } from "xstate";
+import { createMachine } from 'xstate';
 
 const states = {
-  first: "FIRST",
-  second: "SECOND",
+  first: 'FIRST',
+  second: 'SECOND',
   third: {
-    fourth: "FOURTH",
+    fourth: 'FOURTH',
     deep: {
-      wow: "wow",
-    },
-  },
+      wow: 'wow'
+    }
+  }
 };
 
 export const dynamic = createMachine({
   initial: states.first,
   states: {
     [states.first]: {
-      on: {},
+      on: {}
     },
     [states.third.deep.wow]: {
-      states: {},
-    },
-  },
+      states: {}
+    }
+  }
 });

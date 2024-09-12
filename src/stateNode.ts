@@ -1,21 +1,21 @@
-import * as t from "@babel/types";
-import { MaybeArrayOfActions } from "./actions";
-import { Context } from "./context";
-import { History } from "./history";
-import { Invoke } from "./invoke";
-import { StateMeta } from "./meta";
-import { AnyNode, BooleanLiteral, StringLiteral } from "./scalars";
-import { Schema } from "./schema";
-import { MaybeTransitionArray } from "./transitions";
-import { TsTypes } from "./tsTypes";
-import { AnyParser } from "./types";
+import * as t from '@babel/types';
+import { MaybeArrayOfActions } from './actions';
+import { Context } from './context';
+import { History } from './history';
+import { Invoke } from './invoke';
+import { StateMeta } from './meta';
+import { AnyNode, BooleanLiteral, StringLiteral } from './scalars';
+import { Schema } from './schema';
+import { MaybeTransitionArray } from './transitions';
+import { TsTypes } from './tsTypes';
+import { AnyParser } from './types';
 import {
   GetParserResult,
   maybeArrayOf,
   objectOf,
   ObjectOfReturn,
-  objectTypeWithKnownKeys,
-} from "./utils";
+  objectTypeWithKnownKeys
+} from './utils';
 
 const On = objectOf(MaybeTransitionArray);
 
@@ -80,8 +80,8 @@ const StateNodeObject: AnyParser<StateNodeReturn> = objectTypeWithKnownKeys(
     meta: StateMeta,
     context: Context,
     data: AnyNode,
-    preserveActionOrder: BooleanLiteral,
-  }),
+    preserveActionOrder: BooleanLiteral
+  })
 );
 
 export const StateNode = StateNodeObject;

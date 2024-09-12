@@ -1,7 +1,7 @@
-import { AnyParser } from ".";
-import * as t from "@babel/types";
-import { createParser } from "./createParser";
-import { unionType } from "./unionType";
+import { AnyParser } from '.';
+import * as t from '@babel/types';
+import { createParser } from './createParser';
+import { unionType } from './unionType';
 
 export const tsAsExpression = <Result>(parser: AnyParser<Result>) => {
   return createParser({
@@ -10,7 +10,7 @@ export const tsAsExpression = <Result>(parser: AnyParser<Result>) => {
       if (parser.matches(node.expression)) {
         return parser.parse(node.expression, context);
       }
-    },
+    }
   });
 };
 

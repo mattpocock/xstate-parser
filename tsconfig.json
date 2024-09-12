@@ -14,18 +14,11 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "jsx": "react",
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["es6", "dom"],
     "strictPropertyInitialization": true,
     "outDir": "./lib",
-    "rootDir": "./src",
+    "rootDir": "./src"
   },
-  "include": [
-    "src",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules"]
 }

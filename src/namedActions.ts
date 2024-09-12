@@ -10,161 +10,161 @@ import {
   sendParent,
   sendUpdate,
   start,
-  stop,
-} from "xstate/lib/actions";
-import type { ActionNode } from "./actions";
-import { AnyNode, NumericLiteral, StringLiteral } from "./scalars";
-import { namedFunctionCall } from "./utils";
-import * as t from "@babel/types";
-import { unionType } from "./unionType";
-import { wrapParserResult } from "./wrapParserResult";
+  stop
+} from 'xstate/lib/actions';
+import type { ActionNode } from './actions';
+import { AnyNode, NumericLiteral, StringLiteral } from './scalars';
+import { namedFunctionCall } from './utils';
+import * as t from '@babel/types';
+import { unionType } from './unionType';
+import { wrapParserResult } from './wrapParserResult';
 
 export const AfterAction = wrapParserResult(
   namedFunctionCall(
-    "after",
+    'after',
     unionType<{ node: t.Node; value: number | string }>([
       StringLiteral,
-      NumericLiteral,
-    ]),
+      NumericLiteral
+    ])
   ),
   (result): ActionNode => {
     return {
       node: result.node,
-      action: after(result.argument1Result?.value || ""),
-      name: "",
-      declarationType: "inline",
+      action: after(result.argument1Result?.value || ''),
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const CancelAction = wrapParserResult(
-  namedFunctionCall("cancel", AnyNode),
+  namedFunctionCall('cancel', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
-      action: cancel(""),
-      name: "",
-      declarationType: "inline",
+      action: cancel(''),
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const DoneAction = wrapParserResult(
-  namedFunctionCall("done", AnyNode),
+  namedFunctionCall('done', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
-      action: done(""),
-      name: "",
-      declarationType: "inline",
+      action: done(''),
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const EscalateAction = wrapParserResult(
-  namedFunctionCall("escalate", AnyNode),
+  namedFunctionCall('escalate', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
-      action: escalate(""),
-      name: "",
-      declarationType: "inline",
+      action: escalate(''),
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const LogAction = wrapParserResult(
-  namedFunctionCall("log", AnyNode),
+  namedFunctionCall('log', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
       action: log(),
-      name: "",
-      declarationType: "inline",
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const PureAction = wrapParserResult(
-  namedFunctionCall("pure", AnyNode),
+  namedFunctionCall('pure', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
       action: pure(() => []),
-      name: "",
-      declarationType: "inline",
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const RaiseAction = wrapParserResult(
-  namedFunctionCall("raise", AnyNode),
+  namedFunctionCall('raise', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
-      action: raise(""),
-      name: "",
-      declarationType: "inline",
+      action: raise(''),
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const RespondAction = wrapParserResult(
-  namedFunctionCall("respond", AnyNode),
+  namedFunctionCall('respond', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
-      action: respond(""),
-      name: "",
-      declarationType: "inline",
+      action: respond(''),
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const SendParentAction = wrapParserResult(
-  namedFunctionCall("sendParent", AnyNode),
+  namedFunctionCall('sendParent', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
-      action: sendParent(""),
-      name: "",
-      declarationType: "inline",
+      action: sendParent(''),
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const SendUpdateAction = wrapParserResult(
-  namedFunctionCall("sendUpdate", AnyNode),
+  namedFunctionCall('sendUpdate', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
       action: sendUpdate(),
-      name: "",
-      declarationType: "inline",
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const StartAction = wrapParserResult(
-  namedFunctionCall("start", AnyNode),
+  namedFunctionCall('start', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
-      action: start(""),
-      name: "",
-      declarationType: "inline",
+      action: start(''),
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );
 
 export const StopAction = wrapParserResult(
-  namedFunctionCall("stop", AnyNode),
+  namedFunctionCall('stop', AnyNode),
   (result): ActionNode => {
     return {
       node: result.node,
-      action: stop(""),
-      name: "",
-      declarationType: "inline",
+      action: stop(''),
+      name: '',
+      declarationType: 'inline'
     };
-  },
+  }
 );

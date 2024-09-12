@@ -1,6 +1,6 @@
-import type { AppProps } from "next/app";
-import "../index.css";
-import Head from "next/head";
+import type { AppProps } from 'next/app';
+import '../index.css';
+import Head from 'next/head';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

@@ -1,5 +1,5 @@
-import * as t from "@babel/types";
-import { AnyParser } from "./types";
+import * as t from '@babel/types';
+import { AnyParser } from './types';
 
 /**
  * Allows you to wrap a parser and reformulate
@@ -7,7 +7,7 @@ import { AnyParser } from "./types";
  */
 export const wrapParserResult = <T extends t.Node, Result, NewResult>(
   parser: AnyParser<Result>,
-  changeResult: (result: Result, node: T) => NewResult | undefined,
+  changeResult: (result: Result, node: T) => NewResult | undefined
 ): AnyParser<NewResult> => {
   return {
     matches: parser.matches,
@@ -15,6 +15,6 @@ export const wrapParserResult = <T extends t.Node, Result, NewResult>(
       const result = parser.parse(node, context);
       if (!result) return undefined;
       return changeResult(result, node);
-    },
+    }
   };
 };

@@ -1,10 +1,10 @@
-import * as t from "@babel/types";
-import { Condition } from "xstate";
-import { DeclarationType } from ".";
-import { INLINE_IMPLEMENTATION_TYPE } from "./constants";
-import { createParser } from "./createParser";
-import { unionType } from "./unionType";
-import { isFunctionOrArrowFunctionExpression } from "./utils";
+import * as t from '@babel/types';
+import { Condition } from 'xstate';
+import { DeclarationType } from '.';
+import { INLINE_IMPLEMENTATION_TYPE } from './constants';
+import { createParser } from './createParser';
+import { unionType } from './unionType';
+import { isFunctionOrArrowFunctionExpression } from './utils';
 
 export interface CondNode {
   node: t.Node;
@@ -18,13 +18,13 @@ const CondAsFunctionExpression = createParser({
   parseNode: (node): CondNode => {
     return {
       node,
-      name: "",
+      name: '',
       cond: () => {
         return false;
       },
-      declarationType: "inline",
+      declarationType: 'inline'
     };
-  },
+  }
 });
 
 const CondAsStringLiteral = createParser({
@@ -34,9 +34,9 @@ const CondAsStringLiteral = createParser({
       node,
       name: node.value,
       cond: node.value,
-      declarationType: "named",
+      declarationType: 'named'
     };
-  },
+  }
 });
 
 const CondAsNode = createParser({
@@ -44,11 +44,11 @@ const CondAsNode = createParser({
   parseNode: (node): CondNode => {
     return {
       node,
-      name: "",
+      name: '',
       cond: INLINE_IMPLEMENTATION_TYPE,
-      declarationType: "unknown",
+      declarationType: 'unknown'
     };
-  },
+  }
 });
 
 const CondAsIdentifier = createParser({
@@ -56,16 +56,16 @@ const CondAsIdentifier = createParser({
   parseNode: (node): CondNode => {
     return {
       node,
-      name: "",
+      name: '',
       cond: INLINE_IMPLEMENTATION_TYPE,
-      declarationType: "identifier",
+      declarationType: 'identifier'
     };
-  },
+  }
 });
 
 export const Cond = unionType([
   CondAsFunctionExpression,
   CondAsStringLiteral,
   CondAsIdentifier,
-  CondAsNode,
+  CondAsNode
 ]);

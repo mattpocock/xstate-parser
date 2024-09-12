@@ -1,18 +1,18 @@
-import { createMachine } from "xstate";
+import { createMachine } from 'xstate';
 
 export const machine = createMachine(
   {
     after: {
       DELAY_NAME: {
         actions: () => {
-          console.log("Yay");
-        },
-      },
-    },
+          console.log('Yay');
+        }
+      }
+    }
   },
   {
     delays: {
-      DELAY_NAME: 200,
-    },
-  },
+      DELAY_NAME: 200
+    }
+  }
 );

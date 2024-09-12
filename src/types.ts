@@ -1,6 +1,6 @@
-import * as t from "@babel/types";
-import { MachineConfig } from "xstate";
-import { MachineParseResult } from "./MachineParseResult";
+import * as t from '@babel/types';
+import { MachineConfig } from 'xstate';
+import { MachineParseResult } from './MachineParseResult';
 
 export type Location = t.SourceLocation | null;
 
@@ -16,7 +16,7 @@ export interface ParserContext {
 export interface Parser<T extends t.Node = any, Result = any> {
   parse: (
     node: t.Node | undefined | null,
-    context: ParserContext,
+    context: ParserContext
   ) => Result | undefined;
   matches: (node: T) => boolean;
 }
@@ -28,7 +28,7 @@ export interface AnyParser<Result> {
 
 export interface Comment {
   node: t.CommentLine | t.CommentBlock;
-  type: "xstate-ignore-next-line" | "xstate-layout";
+  type: 'xstate-ignore-next-line' | 'xstate-layout';
 }
 
 export interface ParseResult {
@@ -37,4 +37,4 @@ export interface ParseResult {
   file: t.File | undefined;
 }
 
-export type DeclarationType = "named" | "inline" | "identifier" | "unknown";
+export type DeclarationType = 'named' | 'inline' | 'identifier' | 'unknown';

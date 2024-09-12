@@ -1,5 +1,5 @@
-import * as t from "@babel/types";
-import { Parser, ParserContext } from "./types";
+import * as t from '@babel/types';
+import { Parser, ParserContext } from './types';
 
 /**
  * Creates a parser, which can be run later on AST nodes
@@ -18,6 +18,6 @@ export const createParser = <T extends t.Node, Result>(params: {
   };
   return {
     parse,
-    matches,
+    matches
   };
 };

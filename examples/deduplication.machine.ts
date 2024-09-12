@@ -19,26 +19,26 @@ const deduplicationMachine = createMachine<
         on: {
           GO: {
             target: 'deduplicating',
-            actions: 'performAction',
-          },
-        },
+            actions: 'performAction'
+          }
+        }
       },
       deduplicating: {
         after: {
           2000: {
-            target: 'canPerformAction',
-          },
-        },
-      },
-    },
+            target: 'canPerformAction'
+          }
+        }
+      }
+    }
   },
   {
     actions: {
       performAction: (context, event) => {
         return event.action();
-      },
-    },
-  },
+      }
+    }
+  }
 );
 
 export default deduplicationMachine;

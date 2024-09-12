@@ -1,9 +1,9 @@
-import * as t from "@babel/types";
-import { StateNode } from "./stateNode";
-import { GetParserResult } from "./utils";
-import { MachineOptions } from "./options";
-import { createParser } from "./createParser";
-import { AnyTypeParameterList } from "./typeParameters";
+import * as t from '@babel/types';
+import { StateNode } from './stateNode';
+import { GetParserResult } from './utils';
+import { MachineOptions } from './options';
+import { createParser } from './createParser';
+import { AnyTypeParameterList } from './typeParameters';
 
 export type TMachineCallExpression = GetParserResult<
   typeof MachineCallExpression
@@ -15,7 +15,7 @@ export const MachineCallExpression = createParser({
     if (
       t.isMemberExpression(node.callee) &&
       t.isIdentifier(node.callee.property) &&
-      ["createMachine", "Machine"].includes(node.callee.property.name)
+      ['createMachine', 'Machine'].includes(node.callee.property.name)
     ) {
       return {
         callee: node.callee,
@@ -24,13 +24,13 @@ export const MachineCallExpression = createParser({
         options: MachineOptions.parse(node.arguments[1], context),
         isMemberExpression: true,
         typeArguments: AnyTypeParameterList.parse(node.typeParameters, context),
-        node,
+        node
       };
     }
 
     if (
       t.isIdentifier(node.callee) &&
-      ["createMachine", "Machine"].includes(node.callee.name)
+      ['createMachine', 'Machine'].includes(node.callee.name)
     ) {
       return {
         callee: node.callee,
@@ -39,8 +39,8 @@ export const MachineCallExpression = createParser({
         options: MachineOptions.parse(node.arguments[1], context),
         isMemberExpression: false,
         typeArguments: AnyTypeParameterList.parse(node.typeParameters, context),
-        node,
+        node
       };
     }
-  },
+  }
 });

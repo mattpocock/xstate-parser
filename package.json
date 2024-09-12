@@ -7,7 +7,7 @@
   "scripts": {
     "test": "jest src",
     "build": "tsc",
-    "prepare": "patch-package && yarn build"
+    "prepare": "patch-package && yarn build && husky install"
   },
   "dependencies": {},
   "peerDependencies": {
@@ -29,9 +29,17 @@
     "@types/babel__traverse": "^7.14.1",
     "@types/jest": "^26.0.24",
     "@types/node": "^16.0.1",
+    "husky": ">=6",
     "jest": "^27.0.6",
+    "lint-staged": ">=10",
     "patch-package": "^6.4.7",
+    "prettier": "^2.5.1",
     "typescript": "^4.3.5",
     "xstate": "^4.27.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,json,md,mdx}": [
+      "prettier --write"
+    ]
   }
 }

@@ -1,15 +1,15 @@
-import React, { useMemo, useState } from "react";
-import { parseMachinesFromFile } from "xstate-parser-demo";
+import React, { useMemo, useState } from 'react';
+import { parseMachinesFromFile } from 'xstate-parser-demo';
 
 function App() {
   const [text, setText] = useState(`createMachine({ initial: 'wow' })`);
   const result = useMemo(() => {
     try {
       return parseMachinesFromFile(text).machines.map((machine) => {
-        return machine.toConfig() || "could not compile";
+        return machine.toConfig() || 'could not compile';
       });
     } catch (e) {
-      return "Could not parse";
+      return 'Could not parse';
     }
   }, [text]);
 

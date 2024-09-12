@@ -1,10 +1,10 @@
-import fs from "fs";
-import path from "path";
-import * as XStateParser from "./index";
+import fs from 'fs';
+import path from 'path';
+import * as XStateParser from './index';
 
 const parseFileFromExamplesDir = (filename: string) => {
   const asString = fs
-    .readFileSync(path.resolve(__dirname, "../examples", filename))
+    .readFileSync(path.resolve(__dirname, '../examples', filename))
     .toString();
 
   const result = XStateParser.parseMachinesFromFile(asString);
@@ -13,10 +13,10 @@ const parseFileFromExamplesDir = (filename: string) => {
 };
 
 const withoutContext = <T extends { context?: any }>(
-  config: T,
-): Omit<T, "context"> => {
+  config: T
+): Omit<T, 'context'> => {
   const newConfig = {
-    ...config,
+    ...config
   };
 
   delete newConfig.context;
@@ -31,5 +31,5 @@ const serialise = (machine: any) => {
 export const testUtils = {
   parseFileFromExamplesDir,
   withoutContext,
-  serialise,
+  serialise
 };

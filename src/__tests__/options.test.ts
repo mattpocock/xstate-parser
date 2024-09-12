@@ -1,8 +1,8 @@
-import { parseMachinesFromFile } from "..";
-import * as t from "@babel/types";
+import { parseMachinesFromFile } from '..';
+import * as t from '@babel/types';
 
-describe("Options", () => {
-  it("Should handle functions declared as ObjectMethod", () => {
+describe('Options', () => {
+  it('Should handle functions declared as ObjectMethod', () => {
     const result = parseMachinesFromFile(`
       const machine = createMachine({}, {
         services: {
@@ -12,7 +12,7 @@ describe("Options", () => {
     `);
 
     expect(result.machines[0].ast.options?.services?.properties).toHaveLength(
-      1,
+      1
     );
 
     const node =

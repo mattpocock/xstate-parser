@@ -2,17 +2,17 @@ import {
   Actions,
   MachineConfig,
   StateNodeConfig,
-  TransitionConfigOrTarget,
-} from "xstate";
-import { MaybeArrayOfActions } from "./actions";
-import { INLINE_IMPLEMENTATION_TYPE } from "./constants";
-import { TMachineCallExpression } from "./machineCallExpression";
-import { StateNodeReturn } from "./stateNode";
-import { MaybeTransitionArray } from "./transitions";
-import { GetParserResult } from "./utils";
+  TransitionConfigOrTarget
+} from 'xstate';
+import { MaybeArrayOfActions } from './actions';
+import { INLINE_IMPLEMENTATION_TYPE } from './constants';
+import { TMachineCallExpression } from './machineCallExpression';
+import { StateNodeReturn } from './stateNode';
+import { MaybeTransitionArray } from './transitions';
+import { GetParserResult } from './utils';
 
 const parseStateNode = (
-  astResult: StateNodeReturn,
+  astResult: StateNodeReturn
 ): StateNodeConfig<any, any, any> => {
   const config: MachineConfig<any, any, any> = {};
 
@@ -54,7 +54,7 @@ const parseStateNode = (
 
     astResult.after.properties.forEach((afterProperty) => {
       (config.after as any)[afterProperty.key] = getTransitions(
-        afterProperty.result,
+        afterProperty.result
       );
     });
   }
@@ -79,7 +79,7 @@ const parseStateNode = (
 
   if (astResult.meta?.description) {
     config.meta = {
-      description: astResult.meta.description.value,
+      description: astResult.meta.description.value
     };
   }
 
@@ -93,7 +93,7 @@ const parseStateNode = (
 
     astResult.invoke.forEach((invoke) => {
       const toPush: typeof invokes[number] = {
-        src: INLINE_IMPLEMENTATION_TYPE,
+        src: INLINE_IMPLEMENTATION_TYPE
       };
       if (invoke.src) {
         toPush.src = invoke.src.value;
@@ -135,14 +135,14 @@ const parseStateNode = (
 };
 
 export const toMachineConfig = (
-  result: TMachineCallExpression,
+  result: TMachineCallExpression
 ): MachineConfig<any, any, any> | undefined => {
   if (!result?.definition) return undefined;
   return parseStateNode(result?.definition);
 };
 
 export const getActionConfig = (
-  astActions: GetParserResult<typeof MaybeArrayOfActions>,
+  astActions: GetParserResult<typeof MaybeArrayOfActions>
 ): Actions<any, any> => {
   const actions: Actions<any, any> = [];
 
@@ -158,7 +158,7 @@ export const getActionConfig = (
 };
 
 export const getTransitions = (
-  astTransitions: GetParserResult<typeof MaybeTransitionArray>,
+  astTransitions: GetParserResult<typeof MaybeTransitionArray>
 ): TransitionConfigOrTarget<any, any> => {
   const transitions: TransitionConfigOrTarget<any, any> = [];
 

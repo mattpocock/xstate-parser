@@ -1,7 +1,7 @@
-import { parseMachinesFromFile } from "..";
+import { parseMachinesFromFile } from '..';
 
-describe("Enums", () => {
-  it("Should pick up state keys declared as enums and initials", () => {
+describe('Enums', () => {
+  it('Should pick up state keys declared as enums and initials', () => {
     const result = parseMachinesFromFile(`
       enum MyEnum {
         First
@@ -16,16 +16,16 @@ describe("Enums", () => {
     `);
 
     expect(result.machines[0].toConfig()).toEqual({
-      initial: "0",
+      initial: '0',
       states: {
-        0: {},
-      },
+        0: {}
+      }
     });
   });
 });
 
-describe("Member expressions", () => {
-  it("Should pick up state keys declared as member expressions", () => {
+describe('Member expressions', () => {
+  it('Should pick up state keys declared as member expressions', () => {
     const result = parseMachinesFromFile(`
       const states = {
         FIRST: 'first'
@@ -40,10 +40,10 @@ describe("Member expressions", () => {
     `);
 
     expect(result.machines[0].toConfig()).toEqual({
-      initial: "first",
+      initial: 'first',
       states: {
-        first: {},
-      },
+        first: {}
+      }
     });
   });
 });

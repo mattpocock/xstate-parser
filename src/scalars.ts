@@ -1,19 +1,19 @@
-import * as t from "@babel/types";
-import { createParser } from "./createParser";
+import * as t from '@babel/types';
+import { createParser } from './createParser';
 import {
   maybeIdentifierTo,
-  memberExpressionReferencingEnumMember,
-} from "./identifiers";
-import { StringLiteralNode } from "./types";
-import { maybeTsAsExpression } from "./tsAsExpression";
-import { unionType } from "./unionType";
-import { wrapParserResult } from "./wrapParserResult";
+  memberExpressionReferencingEnumMember
+} from './identifiers';
+import { StringLiteralNode } from './types';
+import { maybeTsAsExpression } from './tsAsExpression';
+import { unionType } from './unionType';
+import { wrapParserResult } from './wrapParserResult';
 
 export const StringLiteral = unionType([
   wrapParserResult(memberExpressionReferencingEnumMember, (node) => {
     return {
       node: node.node as t.Node,
-      value: node.value,
+      value: node.value
     };
   }),
   maybeTsAsExpression(
@@ -23,12 +23,12 @@ export const StringLiteral = unionType([
         parseNode: (node): StringLiteralNode => {
           return {
             value: node.value,
-            node,
+            node
           };
-        },
-      }),
-    ),
-  ),
+        }
+      })
+    )
+  )
 ]);
 
 export const NumericLiteral = maybeTsAsExpression(
@@ -38,11 +38,11 @@ export const NumericLiteral = maybeTsAsExpression(
       parseNode: (node) => {
         return {
           value: node.value,
-          node,
+          node
         };
-      },
-    }),
-  ),
+      }
+    })
+  )
 );
 
 export const BooleanLiteral = maybeTsAsExpression(
@@ -52,21 +52,21 @@ export const BooleanLiteral = maybeTsAsExpression(
       parseNode: (node) => {
         return {
           value: node.value,
-          node,
+          node
         };
-      },
-    }),
-  ),
+      }
+    })
+  )
 );
 
 export const AnyNode = createParser({
   babelMatcher: t.isNode,
-  parseNode: (node) => ({ node }),
+  parseNode: (node) => ({ node })
 });
 
 export const Identifier = createParser({
   babelMatcher: t.isIdentifier,
-  parseNode: (node) => ({ node }),
+  parseNode: (node) => ({ node })
 });
 
 export const TemplateLiteral = maybeTsAsExpression(
@@ -74,16 +74,16 @@ export const TemplateLiteral = maybeTsAsExpression(
     createParser({
       babelMatcher: t.isTemplateLiteral,
       parseNode: (node) => {
-        let value = "";
+        let value = '';
 
         node.quasis.forEach((quasi) => {
           value = `${value}${quasi.value.raw}`;
         });
         return {
           node,
-          value,
+          value
         };
-      },
-    }),
-  ),
+      }
+    })
+  )
 );

@@ -4,7 +4,7 @@ import {
   DoneInvokeEvent,
   EventObject,
   Sender,
-  StateNodeConfig,
+  StateNodeConfig
 } from 'xstate';
 
 export interface AudioVideoDeviceSelectionMachineContext {
@@ -48,24 +48,24 @@ const audioVideoDeviceSelectionMachine = createMachine<
       videoInputDevices: [],
       formValues: {
         username: '',
-        password: '',
-      },
+        password: ''
+      }
     },
     states: {
       requestingDevices: {
         invoke: {
           src: 'requestAudioOptions',
           onError: {
-            target: 'couldNotRetrieveDevices',
+            target: 'couldNotRetrieveDevices'
           },
           onDone: {
             actions: [
               'assignDevicesToContext',
-              'assignDefaultDevicesToContext',
+              'assignDefaultDevicesToContext'
             ],
-            target: 'gotDevices',
-          },
-        },
+            target: 'gotDevices'
+          }
+        }
       },
       couldNotRetrieveDevices: {},
       gotDevices: {
@@ -75,10 +75,9 @@ const audioVideoDeviceSelectionMachine = createMachine<
               Boolean(context.audioInputDevices[event.index]),
             actions: assign((context, event) => {
               return {
-                selectedAudioInputDevice:
-                  context.audioInputDevices[event.index],
+                selectedAudioInputDevice: context.audioInputDevices[event.index]
               };
-            }),
+            })
           },
           CHOOSE_AUDIO_OUTPUT_DEVICE: {
             cond: (context, event) =>
@@ -86,52 +85,51 @@ const audioVideoDeviceSelectionMachine = createMachine<
             actions: assign((context, event) => {
               return {
                 selectedAudioOutputDevice:
-                  context.audioOutputDevices[event.index],
+                  context.audioOutputDevices[event.index]
               };
-            }),
+            })
           },
           CHOOSE_VIDEO_DEVICE: {
             cond: (context, event) =>
               Boolean(context.videoInputDevices[event.index]),
             actions: assign((context, event) => {
               return {
-                selectedVideoInputDevice:
-                  context.videoInputDevices[event.index],
+                selectedVideoInputDevice: context.videoInputDevices[event.index]
               };
-            }),
-          },
-        },
-      },
-    },
+            })
+          }
+        }
+      }
+    }
   },
   {
     actions: {
       assignDevicesToContext: assign((context, event: unknown) => {
         return {
           audioInputDevices: (event as DevicesDoneEvent).data.devices.filter(
-            (device) => device.deviceId && device.kind === 'audioinput',
+            (device) => device.deviceId && device.kind === 'audioinput'
           ),
           audioOutputDevices: (event as DevicesDoneEvent).data.devices.filter(
-            (device) => device.deviceId && device.kind === 'audiooutput',
+            (device) => device.deviceId && device.kind === 'audiooutput'
           ),
           videoInputDevices: (event as DevicesDoneEvent).data.devices.filter(
-            (device) => device.deviceId && device.kind === 'videoinput',
-          ),
+            (device) => device.deviceId && device.kind === 'videoinput'
+          )
         };
       }),
       assignDefaultDevicesToContext: assign((context) => {
         return {
           selectedAudioInputDevice: context.audioInputDevices[0],
           selectedAudioOutputDevice: context.audioOutputDevices[0],
-          selectedVideoInputDevice: context.videoInputDevices[0],
+          selectedVideoInputDevice: context.videoInputDevices[0]
         };
-      }),
+      })
     },
     services: {
       requestAudioOptions: async () => {
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
-          video: true,
+          video: true
         });
         const devices = await navigator.mediaDevices.enumerateDevices();
 
@@ -140,11 +138,11 @@ const audioVideoDeviceSelectionMachine = createMachine<
         });
 
         return {
-          devices,
+          devices
         };
-      },
-    },
-  },
+      }
+    }
+  }
 );
 
 export default audioVideoDeviceSelectionMachine;

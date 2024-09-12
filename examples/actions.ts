@@ -1,4 +1,4 @@
-import { createMachine, actions } from "xstate";
+import { createMachine, actions } from 'xstate';
 
 const {
   after,
@@ -16,27 +16,27 @@ const {
   sendParent,
   sendUpdate,
   start,
-  stop,
+  stop
 } = actions;
 
 export const machine = createMachine({
   entry: [
     after(400),
     assign({}),
-    cancel(""),
-    done(""),
-    escalate(""),
-    forwardTo(""),
+    cancel(''),
+    done(''),
+    escalate(''),
+    forwardTo(''),
     log(),
     pure(() => {
       return [];
     }),
-    raise(""),
-    respond(""),
-    send(""),
-    sendParent(""),
+    raise(''),
+    respond(''),
+    send(''),
+    sendParent(''),
     sendUpdate(),
-    start(""),
-    stop(""),
-  ],
+    start(''),
+    stop('')
+  ]
 });

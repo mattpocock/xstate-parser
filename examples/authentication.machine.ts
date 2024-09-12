@@ -1,4 +1,4 @@
-import { assign, createMachine, Sender } from "xstate";
+import { assign, createMachine, Sender } from 'xstate';
 
 export type AuthenticationMachineContext = {
   userDetails?: UserDetails;
@@ -10,17 +10,17 @@ interface UserDetails {
 
 export type AuthenticationMachineEvent =
   | {
-      type: "REPORT_IS_LOGGED_IN";
+      type: 'REPORT_IS_LOGGED_IN';
       userDetails: UserDetails;
     }
   | {
-      type: "REPORT_IS_LOGGED_OUT";
+      type: 'REPORT_IS_LOGGED_OUT';
     }
   | {
-      type: "LOG_OUT";
+      type: 'LOG_OUT';
     }
   | {
-      type: "LOG_IN";
+      type: 'LOG_IN';
       userDetails: UserDetails;
     };
 
@@ -29,41 +29,41 @@ const authenticationMachine = createMachine<
   AuthenticationMachineEvent
 >(
   {
-    id: "authentication",
-    initial: "checkingIfLoggedIn",
+    id: 'authentication',
+    initial: 'checkingIfLoggedIn',
     states: {
       checkingIfLoggedIn: {
         invoke: {
-          src: "checkIfLoggedIn",
+          src: 'checkIfLoggedIn',
           onError: {
-            target: "loggedOut",
-          },
+            target: 'loggedOut'
+          }
         },
         on: {
           REPORT_IS_LOGGED_IN: {
-            target: "loggedIn",
-            actions: "assignUserDetailsToContext",
+            target: 'loggedIn',
+            actions: 'assignUserDetailsToContext'
           },
-          REPORT_IS_LOGGED_OUT: { target: "loggedOut" },
-        },
+          REPORT_IS_LOGGED_OUT: { target: 'loggedOut' }
+        }
       },
       loggedIn: {
         on: {
           LOG_OUT: {
-            target: "loggedOut",
-          },
-        },
+            target: 'loggedOut'
+          }
+        }
       },
       loggedOut: {
-        entry: ["navigateToAuthPage", "clearUserDetailsFromContext"],
+        entry: ['navigateToAuthPage', 'clearUserDetailsFromContext'],
         on: {
           LOG_IN: {
-            target: "loggedIn",
-            actions: "assignUserDetailsToContext",
-          },
-        },
-      },
-    },
+            target: 'loggedIn',
+            actions: 'assignUserDetailsToContext'
+          }
+        }
+      }
+    }
   },
   {
     services: {
@@ -82,7 +82,7 @@ const authenticationMachine = createMachine<
           //     type: "REPORT_IS_LOGGED_OUT",
           //   });
           // }
-        },
+        }
     },
     actions: {
       navigateToAuthPage: () => {
@@ -90,18 +90,18 @@ const authenticationMachine = createMachine<
         // should take them to the /auth route
       },
       assignUserDetailsToContext: assign((context, event) => {
-        if (event.type !== "REPORT_IS_LOGGED_IN") {
+        if (event.type !== 'REPORT_IS_LOGGED_IN') {
           return {};
         }
         return {
-          userDetails: event.userDetails,
+          userDetails: event.userDetails
         };
       }),
       clearUserDetailsFromContext: assign((context) => ({
-        userDetails: undefined,
-      })),
-    },
-  },
+        userDetails: undefined
+      }))
+    }
+  }
 );
 
 export default authenticationMachine;

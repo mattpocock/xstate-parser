@@ -1,14 +1,14 @@
-import { Action, Condition } from "xstate";
-import * as t from "@babel/types";
-import { TMachineCallExpression } from "./machineCallExpression";
-import { StateNodeReturn } from "./stateNode";
-import { toMachineConfig } from "./toMachineConfig";
-import { StringLiteralNode, Comment } from "./types";
-import { TransitionConfigNode } from "./transitions";
-import { ActionNode, ParsedChooseCondition } from "./actions";
-import type { Scope } from "@babel/traverse";
-import { DeclarationType, INLINE_IMPLEMENTATION_TYPE } from ".";
-import { RecordOfArrays } from "./RecordOfArrays";
+import { Action, Condition } from 'xstate';
+import * as t from '@babel/types';
+import { TMachineCallExpression } from './machineCallExpression';
+import { StateNodeReturn } from './stateNode';
+import { toMachineConfig } from './toMachineConfig';
+import { StringLiteralNode, Comment } from './types';
+import { TransitionConfigNode } from './transitions';
+import { ActionNode, ParsedChooseCondition } from './actions';
+import type { Scope } from '@babel/traverse';
+import { DeclarationType, INLINE_IMPLEMENTATION_TYPE } from '.';
+import { RecordOfArrays } from './RecordOfArrays';
 
 export interface MachineParseResultStateNode {
   path: string[];
@@ -53,12 +53,12 @@ export class MachineParseResult {
 
     const getSubNodes = (
       definition: StateNodeReturn | undefined,
-      path: string[],
+      path: string[]
     ) => {
       if (definition) {
         nodes.push({
           ast: definition,
-          path,
+          path
         });
       }
 
@@ -75,7 +75,7 @@ export class MachineParseResult {
   getIsIgnored = () => {
     if (!this.ast?.callee?.loc) return false;
     const isIgnored = this.fileComments.some((comment) => {
-      if (comment.type !== "xstate-ignore-next-line") return false;
+      if (comment.type !== 'xstate-ignore-next-line') return false;
 
       return comment.node.loc.end.line === this.ast!.callee.loc!.start.line - 1;
     });
@@ -91,14 +91,14 @@ export class MachineParseResult {
   getLayoutComment = (): { value: string; comment: Comment } | undefined => {
     if (!this.ast?.callee?.loc) return undefined;
     const layoutComment = this.fileComments.find((comment) => {
-      if (comment.type !== "xstate-layout") return false;
+      if (comment.type !== 'xstate-layout') return false;
 
       return comment.node.loc.end.line === this.ast!.callee.loc!.start.line - 1;
     });
 
     if (!layoutComment) return undefined;
 
-    const comment = layoutComment?.node.value || "";
+    const comment = layoutComment?.node.value || '';
 
     const value = getLayoutString(comment);
 
@@ -115,7 +115,7 @@ export class MachineParseResult {
         on.result.forEach((transition) => {
           targets.push({
             config: transition,
-            fromPath: stateNode.path,
+            fromPath: stateNode.path
           });
         });
       });
@@ -123,34 +123,34 @@ export class MachineParseResult {
         after.result.forEach((transition) => {
           targets.push({
             config: transition,
-            fromPath: stateNode.path,
+            fromPath: stateNode.path
           });
         });
       });
       stateNode.ast.onDone?.forEach((transition) => {
         targets.push({
           config: transition,
-          fromPath: stateNode.path,
+          fromPath: stateNode.path
         });
       });
       stateNode.ast.invoke?.forEach((invoke) => {
         invoke.onDone?.forEach((transition) => {
           targets.push({
             config: transition,
-            fromPath: stateNode.path,
+            fromPath: stateNode.path
           });
         });
         invoke.onError?.forEach((transition) => {
           targets.push({
             config: transition,
-            fromPath: stateNode.path,
+            fromPath: stateNode.path
           });
         });
       });
       stateNode.ast.always?.forEach((transition) => {
         targets.push({
           config: transition,
-          fromPath: stateNode.path,
+          fromPath: stateNode.path
         });
       });
     });
@@ -162,7 +162,7 @@ export class MachineParseResult {
     return this.getTransitions()
       .map((transition) => ({
         target: transition.config?.target,
-        fromPath: transition.fromPath,
+        fromPath: transition.fromPath
       }))
       .filter((transition) => Boolean(transition.target)) as {
       fromPath: string[];
@@ -172,7 +172,7 @@ export class MachineParseResult {
 
   getStateNodeByPath = (path: string[]) => {
     return this.stateNodes.find((node) => {
-      return node.path.join("") === path.join("");
+      return node.path.join('') === path.join('');
     });
   };
 
@@ -184,11 +184,11 @@ export class MachineParseResult {
 
   getAllConds = (
     declarationTypes: DeclarationType[] = [
-      "identifier",
-      "inline",
-      "unknown",
-      "named",
-    ],
+      'identifier',
+      'inline',
+      'unknown',
+      'named'
+    ]
   ) => {
     const conds: {
       node: t.Node;
@@ -206,7 +206,7 @@ export class MachineParseResult {
           name: transition.config.cond.name,
           node: transition.config.cond.node,
           cond: transition.config.cond.cond,
-          statePath: transition.fromPath,
+          statePath: transition.fromPath
         });
       }
     });
@@ -216,14 +216,14 @@ export class MachineParseResult {
         if (
           chooseCondition.conditionNode?.declarationType &&
           declarationTypes.includes(
-            chooseCondition.conditionNode?.declarationType,
+            chooseCondition.conditionNode?.declarationType
           )
         ) {
           conds.push({
             name: chooseCondition.conditionNode.name,
             node: chooseCondition.conditionNode.node,
             cond: chooseCondition.conditionNode.cond,
-            statePath: action.statePath,
+            statePath: action.statePath
           });
         }
       });
@@ -241,7 +241,7 @@ export class MachineParseResult {
     const addAction = (action: ActionNode, statePath: string[]) => {
       actions.push({
         node: action,
-        statePath,
+        statePath
       });
 
       action.chooseConditions?.forEach((chooseCondition) => {
@@ -253,7 +253,7 @@ export class MachineParseResult {
 
     this.getTransitions().forEach((transition) => {
       transition.config?.actions?.forEach((action) =>
-        addAction(action, transition.fromPath),
+        addAction(action, transition.fromPath)
       );
     });
 
@@ -277,11 +277,11 @@ export class MachineParseResult {
 
   getAllActions = (
     declarationTypes: DeclarationType[] = [
-      "identifier",
-      "inline",
-      "unknown",
-      "named",
-    ],
+      'identifier',
+      'inline',
+      'unknown',
+      'named'
+    ]
   ) => {
     const actions: {
       node: t.Node;
@@ -298,7 +298,7 @@ export class MachineParseResult {
           node: action.node,
           action: action.action,
           statePath,
-          chooseConditions: action.chooseConditions,
+          chooseConditions: action.chooseConditions
         });
       }
     };
@@ -312,11 +312,11 @@ export class MachineParseResult {
 
   getAllServices = (
     declarationTypes: DeclarationType[] = [
-      "identifier",
-      "inline",
-      "unknown",
-      "named",
-    ],
+      'identifier',
+      'inline',
+      'unknown',
+      'named'
+    ]
   ) => {
     const services: {
       node: t.Node;
@@ -329,7 +329,7 @@ export class MachineParseResult {
     this.stateNodes.map((stateNode) => {
       stateNode.ast.invoke?.forEach((invoke) => {
         const invokeSrc =
-          typeof invoke.src?.value === "string" ? invoke.src.value : undefined;
+          typeof invoke.src?.value === 'string' ? invoke.src.value : undefined;
         if (
           invoke.src?.declarationType &&
           declarationTypes.includes(invoke.src?.declarationType)
@@ -339,7 +339,7 @@ export class MachineParseResult {
             id: invoke.id?.value,
             node: invoke.node,
             statePath: stateNode.path,
-            srcNode: invoke.src?.node,
+            srcNode: invoke.src?.node
           });
         }
       });
@@ -363,7 +363,7 @@ export class MachineParseResult {
           delays.add(key, {
             node: property.keyNode,
             name: key,
-            statePath: stateNode.path,
+            statePath: stateNode.path
           });
         }
       });
